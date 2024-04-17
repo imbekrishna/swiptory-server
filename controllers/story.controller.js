@@ -1,6 +1,7 @@
 const { validationResult } = require("express-validator");
 const Story = require("../models/story.model.js");
 const User = require("../models/user.model.js");
+const ObjectId = require("mongoose").mongo.ObjectId;
 
 /**
  * Story controller to list all the stories in the database
@@ -15,7 +16,7 @@ const getAllStories = async (request, response) => {
 };
 
 /**
- * Story controller to list all the stories in the database
+ * Story controller to list a single story in the database
  * @param {import('express').Request} request - Express request object.
  * @param {import('express').Response} response - Express response object
  * @returns {void}
@@ -59,9 +60,63 @@ const createStory = async (request, response) => {
 
   response.status(201).json(newStory);
 };
+/**
+ * Story controller to update a story in the database
+ * @param {import('express').Request} request - Express request object.
+ * @param {import('express').Response} response - Express response object
+ * @param {import('express').NextFunction} next - The next middleware function in the stack.
+ * @returns {void}
+ */
+const updateStory = async (request, response) => {
+  const errors = validationResult(request);
+  if (!errors.isEmpty()) {
+    return response.status(400).json({ error: errors.array() });
+  }
+
+  const storyId = request.params.storyId;
+
+  /**
+   * Logged user object
+   * @type {User}
+   */
+  const activeUser = request.activeUser;
+
+  /**
+   * @type {Story}
+   */
+  const story = await Story.findOne({ _id: storyId });
+  if (!story) {
+    return response
+      .status(404)
+      .json({ message: `No story with id: ${storyId}` });
+  }
+
+  /**
+   * @type {import("mongoose").mongo.ObjectId}
+   */
+  const storyUser = new ObjectId(story.user);
+
+  if (!storyUser.equals(activeUser._id)) {
+    return response
+      .status(400)
+      .json({ message: "You are not authorized to perform this action" });
+  }
+
+  const updatedStory = await Story.updateOne(
+    { _id: storyId },
+    { ...request.body, user: activeUser._id },
+    {
+      new: true,
+    }
+  );
+
+  response
+    .status(200)
+    .json({ message: "Story updated successfully.", data: updatedStory });
+};
 
 /**
- * Story controller to create new story in the database
+ * Story controller to like a story in the database
  * @param {import('express').Request} request - Express request object.
  * @param {import('express').Response} response - Express response object
  * @param {import('express').NextFunction} next - The next middleware function in the stack.
@@ -130,9 +185,62 @@ const likeStory = async (request, response, next) => {
   }
 };
 
+/**
+ * Story controller to delete a story in the database
+ * @param {import('express').Request} request - Express request object.
+ * @param {import('express').Response} response - Express response object
+ * @returns {void}
+ */
+const deleteStoryById = async (request, response) => {
+  const storyId = request.params.storyId;
+
+  /**
+   * @type {User}
+   */
+  const activeUser = request.activeUser;
+
+  /**
+   * @type {Story}
+   */
+  const story = await Story.findOne({ _id: storyId });
+  if (!story) {
+    return response
+      .status(404)
+      .json({ message: `No story with id: ${storyId}` });
+  }
+
+  /**
+   * @type {import("mongoose").mongo.ObjectId}
+   */
+  const storyUser = new ObjectId(story.user);
+
+  if (!storyUser.equals(activeUser._id)) {
+    return response
+      .status(400)
+      .json({ message: "You are not authorized to perform this action" });
+  }
+
+  await Story.findOneAndDelete({ _id: storyId });
+
+  /**
+   * @type {import("mongoose").mongo.ObjectId}
+   */
+  const storyIdObject = new ObjectId(storyId);
+  const filteredStories = activeUser.stories.filter((s) =>
+    storyIdObject.equals(s)
+  );
+  activeUser.stories = filteredStories;
+
+  await activeUser.save();
+
+  response.status(204).json({ message: "Story deleted successfully" });
+};
+
 module.exports = {
   getAllStories,
   getStoryById,
   createStory,
   likeStory,
+  updateStory,
+  deleteStoryById,
 };

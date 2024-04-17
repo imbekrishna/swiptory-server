@@ -23,7 +23,7 @@ module.exports = {
   rules: {
     "no-unused-vars": "error",
     "no-undef": "error",
-    " no-unreachable": "error",
+    "no-unreachable": "error",
     quotes: ["error", "double"],
     "object-curly-spacing": ["error", "always"],
     "arrow-spacing": ["error", { before: true, after: true }],

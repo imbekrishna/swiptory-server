@@ -3,7 +3,6 @@
  */
 const storyRouter = require("express").Router();
 
-const Story = require("../models/story.model.js");
 const storyController = require("../controllers/story.controller.js");
 const { storyValidator } = require("../utils/validators.js");
 const { verifyToken, getLoggedUser } = require("../utils/middleware.js");
@@ -17,6 +16,11 @@ storyRouter.post(
   getLoggedUser,
   storyController.createStory
 );
+
+storyRouter
+  .route("/:storyId")
+  .put(verifyToken, getLoggedUser, storyValidator, storyController.updateStory)
+  .delete(verifyToken, getLoggedUser, storyController.deleteStoryById);
 
 storyRouter.patch(
   "/like/:storyId",

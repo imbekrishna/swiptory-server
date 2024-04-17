@@ -1,7 +1,5 @@
 const bcrypt = require("bcrypt");
 const { validationResult } = require("express-validator");
-const logger = require("../utils/logger");
-
 const User = require("../models/user.model.js");
 
 /**
@@ -22,7 +20,7 @@ const createUser = async (request, response) => {
   const userExists = await User.findOne({ username });
 
   if (userExists) {
-    return response.status(409).json({ error: `Username already taken.` });
+    return response.status(409).json({ error: "Username already taken." });
   }
 
   const passwordHash = await bcrypt.hash(password, 10);

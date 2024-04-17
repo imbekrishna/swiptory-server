@@ -25,13 +25,13 @@ const loginUser = async (request, response) => {
   const user = await User.findOne({ username }).select("username password");
 
   if (!user) {
-    return response.status(400).json({ error: `Invalid username/password` });
+    return response.status(400).json({ error: "Invalid username/password" });
   }
 
   const validPassword = await bcrypt.compare(password, user.password);
 
   if (!validPassword) {
-    return response.status(400).json({ error: `Invalid username/password` });
+    return response.status(400).json({ error: "Invalid username/password" });
   }
 
   const token = jwt.sign(
