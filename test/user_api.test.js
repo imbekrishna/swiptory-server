@@ -41,7 +41,7 @@ describe("User route", () => {
 
     console.log(response.status, response.statusCode);
 
-    expect(response.statusCode).toEqual(200);
+    expect(response.statusCode).toEqual(201);
     expect(user.username).toEqual(validUserData.username);
   });
 
