@@ -10,6 +10,7 @@ const middleware = require("./utils/middleware");
 const userRouter = require("./routes/user.route");
 const authRouter = require("./routes/auth.route");
 const storyRouter = require("./routes/story.route");
+const categoryRouter = require("./routes/category.route");
 
 // mongodb | mongoose connection
 mongoose
@@ -41,6 +42,7 @@ app.get("/api/health", (req, res) => {
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/story", storyRouter);
+app.use("/api/category", categoryRouter);
 
 // Error handling middlewares
 app.use(middleware.unknownEndpoint);

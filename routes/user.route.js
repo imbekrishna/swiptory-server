@@ -6,9 +6,7 @@ const userRouter = require("express").Router();
 const validators = require("../utils/validators");
 const userController = require("../controllers/user.controller.js");
 
-userRouter.get("/", (request, response) => {
-  response.status(200).json({ message: "User found" });
-});
+userRouter.get("/:username", userController.getUser);
 
 userRouter.post("/", validators.signupValidator, userController.createUser);
 

@@ -8,6 +8,26 @@ const User = require("../models/user.model.js");
  * @param {import('express').Response} response - Express response object
  * @returns {void}
  */
+const getUser = async (request, response) => {
+  const username = request.params.username;
+
+  const user = await User.findOne({ username });
+
+  if (!user) {
+    return response
+      .status(404)
+      .json({ message: `No user with username ${username} found` });
+  }
+
+  response.status(200).json({ message: "User found", data: user });
+};
+
+/**
+ * User controller to create new User in the database
+ * @param {import('express').Request} request - Express request object.
+ * @param {import('express').Response} response - Express response object
+ * @returns {void}
+ */
 const createUser = async (request, response) => {
   const errors = validationResult(request);
 
@@ -40,5 +60,6 @@ const createUser = async (request, response) => {
 };
 
 module.exports = {
+  getUser,
   createUser,
 };

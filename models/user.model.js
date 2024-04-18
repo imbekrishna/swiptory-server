@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 /**
- * Mongoose schema for a user
+ * Mongoose schema for User
  * @type {import('mongoose').Schema<User>}
  */
 const UserSchema = new mongoose.Schema(

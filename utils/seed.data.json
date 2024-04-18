@@ -1,0 +1,82 @@
+[
+  {
+    "category": "MOVIE",
+    "slides": [
+      {
+        "heading": "Movie slide heading",
+        "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+        "imageUrl": "https://picsum.photos/id/117/300/400"
+      },
+      {
+        "heading": "Movie slide heading",
+        "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+        "imageUrl": "https://picsum.photos/id/119/300/400"
+      },
+      {
+        "heading": "Movie slide heading",
+        "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+        "imageUrl": "https://picsum.photos/id/122/300/400"
+      }
+    ]
+  },
+  {
+    "category": "TRAVEL",
+    "slides": [
+      {
+        "heading": "Travel slide heading",
+        "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+        "imageUrl": "https://picsum.photos/id/27/300/400"
+      },
+      {
+        "heading": "Travel slide heading",
+        "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+        "imageUrl": "https://picsum.photos/id/28/300/400"
+      },
+      {
+        "heading": "Travel slide heading",
+        "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+        "imageUrl": "https://picsum.photos/id/29/300/400"
+      }
+    ]
+  },
+  {
+    "category": "ENTERTAINMENT",
+    "slides": [
+      {
+        "heading": "Entertainment slide heading",
+        "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+        "imageUrl": "https://picsum.photos/id/145/300/400"
+      },
+      {
+        "heading": "Entertainment slide heading",
+        "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+        "imageUrl": "https://picsum.photos/id/73/300/400"
+      },
+      {
+        "heading": "Entertainment slide heading",
+        "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+        "imageUrl": "https://picsum.photos/id/76/300/400"
+      }
+    ]
+  },
+  {
+    "category": "HEALTH",
+    "slides": [
+      {
+        "heading": "Health slide heading",
+        "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+        "imageUrl": "https://picsum.photos/id/102/300/400"
+      },
+      {
+        "heading": "Health slide heading",
+        "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+        "imageUrl": "https://picsum.photos/id/107/300/400"
+      },
+      {
+        "heading": "Health slide heading",
+        "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+        "imageUrl": "https://picsum.photos/id/112/300/400"
+      }
+    ]
+  }
+]

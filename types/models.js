@@ -25,3 +25,9 @@
  * @property {Array<string>} [likes] - Array of id of the users liking the story
  * @memberof typedefs
  */
+
+/**
+ * @typedef {Object} Category
+ * @property {string} _id - Id of the category.
+ * @property {string} name - Name of the category.
+ */

@@ -37,9 +37,11 @@ const StorySchema = new mongoose.Schema(
       ref: "User",
     },
 
+    // Is there a need to create subschema?
     category: {
-      type: String, // TODO: Either add enums or create new category model
+      type: mongoose.Schema.Types.String,
       required: true,
+      ref: "Category",
     },
     slides: {
       type: [SlideSchema],

@@ -17,18 +17,12 @@ const invalidUserData = {
 };
 
 describe("User route", () => {
-  test("always returns valid response", async () => {
-    // TODO: Add get user controller
-    await api
-      .get("/api/user")
-      .expect(200)
-      .expect("Content-Type", /application\/json/);
-  });
+  test("fails to retrieve user for given username", async () => {
+    const response = await api.get(`/api/user/${validUserData.username}`);
 
-  test("returns message 'User found'", async () => {
-    const response = await api.get("/api/user");
-    const message = response.body.message;
-    assert.strictEqual(message === "User found", true);
+    expect(response.statusCode).toBe(404);
+    const message = `No user with username ${validUserData.username} found`;
+    expect(response.body.message).toMatch(message);
   });
 
   test("creates new user with valid data", async () => {
@@ -38,6 +32,15 @@ describe("User route", () => {
 
     expect(response.statusCode).toEqual(201);
     expect(user.username).toEqual(validUserData.username);
+  });
+
+  test("retrieves user for given username", async () => {
+    const response = await api.get(`/api/user/${validUserData.username}`);
+    const user = response.body.data;
+
+    expect(response.statusCode).toBe(200);
+    expect(user).toBeDefined();
+    expect(user.username).toBe(validUserData.username);
   });
 
   test("fails to create user with existing username", async () => {

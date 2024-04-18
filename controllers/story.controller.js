@@ -33,6 +33,25 @@ const getStoryById = async (request, response) => {
 };
 
 /**
+ * Story controller to list a single story in the database
+ * @param {import('express').Request} request - Express request object.
+ * @param {import('express').Response} response - Express response object
+ * @returns {void}
+ */
+const getStoryByIdPopulated = async (request, response) => {
+  const storyId = request.params.storyId;
+  const story = await Story.findOne({ _id: storyId })
+    .populate("user")
+    .populate("category");
+
+  if (!story) {
+    return response.status(404).json({ message: "Story not found" });
+  }
+
+  response.status(200).json({ message: `Story id: ${storyId}`, data: story });
+};
+
+/**
  * Story controller to create new story in the database
  * @param {import('express').Request} request - Express request object.
  * @param {import('express').Response} response - Express response object
@@ -188,7 +207,6 @@ const likeStory = async (request, response, next) => {
   }
 };
 
-// TODO: Add bookmark route
 /**
  * Story controller to bookmark a story
  * @param {import('express').Request} request - Express request object
@@ -283,6 +301,7 @@ const deleteStoryById = async (request, response) => {
 module.exports = {
   getAllStories,
   getStoryById,
+  getStoryByIdPopulated,
   createStory,
   likeStory,
   updateStory,
