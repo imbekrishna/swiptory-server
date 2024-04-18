@@ -185,6 +185,45 @@ const likeStory = async (request, response, next) => {
   }
 };
 
+// TODO: Add bookmark route
+/**
+ * Story controller to bookmark a story
+ * @param {import('express').Request} request - Express request object
+ * @param {import('express').Response} response - Express response object
+ */
+const bookmarkStory = async (request, response) => {
+  const storyId = request.params.storyId;
+
+  /**
+   * @type {User}
+   */
+  const activeUser = request.activeUser;
+
+  await User.updateOne({ _id: activeUser._id }, [
+    {
+      $set: {
+        bookmarks: {
+          $cond: [
+            {
+              $in: [storyId, "$bookmarks"],
+            },
+            {
+              $setDifference: ["$bookmarks", [storyId]],
+            },
+            {
+              $concatArrays: ["$bookmarks", [storyId]],
+            },
+          ],
+        },
+      },
+    },
+  ]);
+
+  response.status(200).json({
+    message: "Bookmark updated",
+  });
+};
+
 /**
  * Story controller to delete a story in the database
  * @param {import('express').Request} request - Express request object.
@@ -243,4 +282,5 @@ module.exports = {
   likeStory,
   updateStory,
   deleteStoryById,
+  bookmarkStory,
 };

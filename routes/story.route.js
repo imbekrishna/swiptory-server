@@ -29,4 +29,11 @@ storyRouter.patch(
   storyController.likeStory
 );
 
+storyRouter.patch(
+  "/bookmark/:storyId",
+  verifyToken,
+  getLoggedUser,
+  storyController.bookmarkStory
+);
+
 module.exports = storyRouter;

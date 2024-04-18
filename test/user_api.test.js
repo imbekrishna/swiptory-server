@@ -6,6 +6,7 @@ import User from "../models/user.model.js";
 
 const api = supertest(app);
 
+// FIXME: Tests fail when ran as whole
 beforeAll(async () => {
   await User.deleteMany({});
 });
