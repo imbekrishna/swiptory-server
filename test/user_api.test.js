@@ -6,11 +6,6 @@ import User from "../models/user.model.js";
 
 const api = supertest(app);
 
-// FIXME: Tests fail when ran as whole
-beforeAll(async () => {
-  await User.deleteMany({});
-});
-
 describe("User route", () => {
   const validUserData = {
     username: "imbekrishna",
@@ -21,6 +16,11 @@ describe("User route", () => {
     username: "imbekrishna",
     password: "we234",
   };
+
+  // FIXME: Tests fail when ran as whole
+  beforeAll(async () => {
+    await User.deleteMany({});
+  });
 
   test("returns valid response", async () => {
     await api
@@ -40,7 +40,7 @@ describe("User route", () => {
 
     const user = response.body.data;
 
-    console.log(response.status, response.statusCode);
+    console.log(response);
 
     expect(response.statusCode).toEqual(201);
     expect(user.username).toEqual(validUserData.username);
