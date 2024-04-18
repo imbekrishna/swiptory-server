@@ -23,10 +23,13 @@ const getAllStories = async (request, response) => {
  */
 const getStoryById = async (request, response) => {
   const storyId = request.params.storyId;
+  const story = await Story.findOne({ _id: storyId });
 
-  const stories = await Story.findOne({ _id: storyId });
+  if (!story) {
+    return response.status(404).json({ message: "Story not found" });
+  }
 
-  response.status(200).json({ message: `Story id: ${storyId}`, data: stories });
+  response.status(200).json({ message: `Story id: ${storyId}`, data: story });
 };
 
 /**
@@ -58,7 +61,7 @@ const createStory = async (request, response) => {
   activeUser.stories.push(newStory._id);
   await activeUser.save();
 
-  response.status(201).json(newStory);
+  response.status(201).json({ data: newStory });
 };
 /**
  * Story controller to update a story in the database
@@ -98,11 +101,11 @@ const updateStory = async (request, response) => {
 
   if (!storyUser.equals(activeUser._id)) {
     return response
-      .status(400)
+      .status(403)
       .json({ message: "You are not authorized to perform this action" });
   }
 
-  const updatedStory = await Story.updateOne(
+  const updatedStory = await Story.findOneAndUpdate(
     { _id: storyId },
     { ...request.body, user: activeUser._id },
     {
@@ -219,8 +222,8 @@ const bookmarkStory = async (request, response) => {
     },
   ]);
 
-  response.status(200).json({
-    message: "Bookmark updated",
+  response.status(201).json({
+    message: "Bookmarks updated",
   });
 };
 
@@ -255,24 +258,26 @@ const deleteStoryById = async (request, response) => {
 
   if (!storyUser.equals(activeUser._id)) {
     return response
-      .status(400)
+      .status(403)
       .json({ message: "You are not authorized to perform this action" });
   }
 
   await Story.findOneAndDelete({ _id: storyId });
 
+  // FIXME: What happens to the user likes or bookmarks if the story is deleted?
+
   /**
    * @type {import("mongoose").mongo.ObjectId}
    */
   const storyIdObject = new ObjectId(storyId);
-  const filteredStories = activeUser.stories.filter((s) =>
-    storyIdObject.equals(s)
+  const filteredStories = activeUser.stories.filter(
+    (s) => !storyIdObject.equals(s)
   );
   activeUser.stories = filteredStories;
 
   await activeUser.save();
 
-  response.status(204).json({ message: "Story deleted successfully" });
+  response.status(204).end();
 };
 
 module.exports = {

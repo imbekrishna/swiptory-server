@@ -2,27 +2,23 @@ import { describe, test, afterAll, beforeAll, assert, expect } from "vitest";
 import mongoose from "mongoose";
 import supertest from "supertest";
 import app from "../app";
-import User from "../models/user.model.js";
+import { nanoid } from "nanoid";
 
 const api = supertest(app);
 
+const validUserData = {
+  username: `imbekrishna+${nanoid(5)}`,
+  password: "Imbekrishna@234",
+};
+
+const invalidUserData = {
+  username: "imbekrishna",
+  password: "we234",
+};
+
 describe("User route", () => {
-  const validUserData = {
-    username: "imbekrishna",
-    password: "Imbekrishna@234",
-  };
-
-  const invalidUserData = {
-    username: "imbekrishna",
-    password: "we234",
-  };
-
-  // FIXME: Tests fail when ran as whole
-  beforeAll(async () => {
-    await User.deleteMany({});
-  });
-
-  test("returns valid response", async () => {
+  test("always returns valid response", async () => {
+    // TODO: Add get user controller
     await api
       .get("/api/user")
       .expect(200)
@@ -39,8 +35,6 @@ describe("User route", () => {
     const response = await api.post("/api/user").send(validUserData);
 
     const user = response.body.data;
-
-    console.log(response);
 
     expect(response.statusCode).toEqual(201);
     expect(user.username).toEqual(validUserData.username);
