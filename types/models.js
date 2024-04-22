@@ -30,4 +30,5 @@
  * @typedef {Object} Category
  * @property {string} _id - Id of the category.
  * @property {string} name - Name of the category.
+ * @property {string} imageUrl - Image of the category.
  */

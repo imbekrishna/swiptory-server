@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import supertest from "supertest";
 import { afterAll, beforeAll, describe, expect, test } from "vitest";
-import app, { response } from "../app";
+import app, { response } from "../api/app";
 import Story from "../models/story.model";
 import User from "../models/user.model";
 

@@ -10,7 +10,11 @@ const ObjectId = require("mongoose").mongo.ObjectId;
  * @returns {void}
  */
 const getAllStories = async (request, response) => {
-  const stories = await Story.find({});
+  const category = request.query.category;
+
+  const query = category ? { category } : {};
+
+  const stories = await Story.find(query);
 
   response.status(200).json({ message: "All stories", data: stories });
 };

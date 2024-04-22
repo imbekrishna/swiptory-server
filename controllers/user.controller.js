@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const { validationResult } = require("express-validator");
 const User = require("../models/user.model.js");
+const Story = require("../models/story.model.js");
 
 /**
  * User controller to create new User in the database
@@ -59,7 +60,28 @@ const createUser = async (request, response) => {
   });
 };
 
+/**
+ * User controller to create new User in the database
+ * @param {import('express').Request} request - Express request object.
+ * @param {import('express').Response} response - Express response object
+ * @returns {void}
+ */
+const getUserStories = async (request, response) => {
+  /**
+   * Logged user object
+   * @type {User}
+   */
+  const activeUser = request.activeUser;
+
+  /**
+   * @type {Story[]}
+   */
+  const stories = await Story.find({ _id: { $in: activeUser.stories } });
+  return response.status(200).json({ message: "User stories", data: stories });
+};
+
 module.exports = {
   getUser,
   createUser,
+  getUserStories,
 };

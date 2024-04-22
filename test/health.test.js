@@ -1,12 +1,12 @@
-import { test } from 'vitest'
-import supertest from 'supertest'
-import app from '../app'
+import { test } from "vitest";
+import supertest from "supertest";
+import app from "../api/app";
 
-const api = supertest(app)
+const api = supertest(app);
 
-test('health check passes', async () => {
+test("health check passes", async () => {
   await api
-    .get('/api/health')
+    .get("/")
     .expect(200)
-    .expect('Content-Type', /application\/json/)
-})
+    .expect("Content-Type", /application\/json/);
+});

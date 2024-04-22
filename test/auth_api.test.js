@@ -1,7 +1,7 @@
 import { describe, test, afterAll, beforeAll, assert, expect } from "vitest";
 import mongoose from "mongoose";
 import supertest from "supertest";
-import app from "../app";
+import app from "../api/app";
 import User from "../models/user.model.js";
 
 const api = supertest(app);
