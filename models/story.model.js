@@ -48,6 +48,7 @@ const StorySchema = new mongoose.Schema(
     },
 
     likes: [{ type: mongoose.Schema.Types.ObjectId, default: [] }],
+    bookmarks: [{ type: mongoose.Schema.Types.ObjectId, default: [] }],
   },
   {
     timestamps: true,

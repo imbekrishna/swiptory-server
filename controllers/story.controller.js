@@ -11,10 +11,11 @@ const ObjectId = require("mongoose").mongo.ObjectId;
  */
 const getAllStories = async (request, response) => {
   const category = request.query.category;
+  const limit = request.query.limit ?? 4;
 
   const query = category ? { category } : {};
 
-  const stories = await Story.find(query);
+  const stories = await Story.find(query).limit(limit);
 
   response.status(200).json({ message: "All stories", data: stories });
 };
@@ -215,8 +216,10 @@ const likeStory = async (request, response, next) => {
  * Story controller to bookmark a story
  * @param {import('express').Request} request - Express request object
  * @param {import('express').Response} response - Express response object
+ * @param {import('express').NextFunction} next - The next middleware function in the stack.
+ * @returns {void}
  */
-const bookmarkStory = async (request, response) => {
+const bookmarkStory = async (request, response, next) => {
   const storyId = request.params.storyId;
 
   /**
@@ -224,29 +227,59 @@ const bookmarkStory = async (request, response) => {
    */
   const activeUser = request.activeUser;
 
-  await User.updateOne({ _id: activeUser._id }, [
-    {
-      $set: {
-        bookmarks: {
-          $cond: [
-            {
-              $in: [storyId, "$bookmarks"],
-            },
-            {
-              $setDifference: ["$bookmarks", [storyId]],
-            },
-            {
-              $concatArrays: ["$bookmarks", [storyId]],
-            },
-          ],
+  const session = await User.startSession();
+  session.startTransaction();
+  try {
+    await User.updateOne({ _id: activeUser._id }, [
+      {
+        $set: {
+          bookmarks: {
+            $cond: [
+              {
+                $in: [storyId, "$bookmarks"],
+              },
+              {
+                $setDifference: ["$bookmarks", [storyId]],
+              },
+              {
+                $concatArrays: ["$bookmarks", [storyId]],
+              },
+            ],
+          },
         },
       },
-    },
-  ]);
+    ]);
 
-  response.status(201).json({
-    message: "Bookmarks updated",
-  });
+    await Story.updateOne({ _id: storyId }, [
+      {
+        $set: {
+          bookmarks: {
+            $cond: [
+              {
+                $in: [activeUser._id, "$bookmarks"],
+              },
+              {
+                $setDifference: ["$bookmarks", [activeUser._id]],
+              },
+              {
+                $concatArrays: ["$bookmarks", [activeUser._id]],
+              },
+            ],
+          },
+        },
+      },
+    ]);
+    await session.commitTransaction();
+    session.endSession();
+    response.status(201).json({
+      message: "Bookmarks updated",
+    });
+  } catch (error) {
+    response.status(422).json({ message: "Failed to update bookmarks" });
+    await session.abortTransaction();
+    session.endSession();
+    next(error);
+  }
 };
 
 /**

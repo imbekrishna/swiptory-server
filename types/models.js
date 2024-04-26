@@ -23,6 +23,7 @@
  * @property {string} category - Category of the story.
  * @property {Array<StorySlide>} slides - Array of slides of the story
  * @property {Array<string>} [likes] - Array of id of the users liking the story
+ * @property {Array<string>} [bookmarks] - Array of id of the users bookmarking the story
  * @memberof typedefs
  */
 

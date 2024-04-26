@@ -1,9 +1,9 @@
-// const dotenv = require("dotenv")
+const dotenv = require("dotenv");
 // const logger = require("./logger");
 
 // Configure environment variables. On error shutdown the server
+dotenv.config();
 /*
-const status = dotenv.config()
 if (status.error) {
   logger.error("Error configuring env variables")
   logger.error(status.error)
