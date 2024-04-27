@@ -10,14 +10,23 @@ const ObjectId = require("mongoose").mongo.ObjectId;
  * @returns {void}
  */
 const getAllStories = async (request, response) => {
-  const category = request.query.category;
-  const limit = request.query.limit ?? 4;
+  const { page = 1, limit = 4, category } = request.query;
 
   const query = category ? { category } : {};
 
-  const stories = await Story.find(query).limit(limit);
+  const stories = await Story.find(query)
+    .limit(limit * 1)
+    .skip((page - 1) * limit)
+    .sort({ likes: -1 });
 
-  response.status(200).json({ message: "All stories", data: stories });
+  const count = await Story.find(query).count();
+
+  response.status(200).json({
+    message: "All stories",
+    data: stories,
+    totalPages: Math.ceil(count / limit),
+    currentPage: page,
+  });
 };
 
 /**
