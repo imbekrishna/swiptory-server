@@ -25,7 +25,7 @@ const getAllStories = async (request, response) => {
     message: "All stories",
     data: stories,
     totalPages: Math.ceil(count / limit),
-    currentPage: page,
+    currentPage: +page,
   });
 };
 
