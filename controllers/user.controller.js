@@ -33,7 +33,9 @@ const createUser = async (request, response) => {
   const errors = validationResult(request);
 
   if (!errors.isEmpty()) {
-    return response.status(400).json({ error: errors.array() });
+    const mappedErrors = [];
+    errors.array().map((err) => mappedErrors.push(err.msg));
+    return response.status(400).json({ error: mappedErrors.join("\n") });
   }
 
   const { username, password } = request.body;

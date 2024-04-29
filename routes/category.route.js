@@ -4,10 +4,10 @@
 const categoryRouter = require("express").Router();
 const {
   getCategories,
-  addCategory,
+  // addCategory,
 } = require("../controllers/category.controller");
 
 categoryRouter.get("/", getCategories);
-categoryRouter.post("/", addCategory);
+// categoryRouter.post("/", addCategory);
 
 module.exports = categoryRouter;
