@@ -14,6 +14,13 @@ userRouter.get(
   userController.getUserStories
 );
 
+userRouter.get(
+  "/bookmarks",
+  verifyToken,
+  getLoggedUser,
+  userController.getUserBookmarks
+);
+
 userRouter.get("/:username", userController.getUser);
 
 userRouter.post("/", validators.signupValidator, userController.createUser);

@@ -67,21 +67,72 @@ const createUser = async (request, response) => {
  * @returns {void}
  */
 const getUserStories = async (request, response) => {
+  const { page = 1, limit = 4 } = request.query;
+
   /**
    * Logged user object
    * @type {User}
    */
   const activeUser = request.activeUser;
 
+  const query = { _id: { $in: activeUser.stories } };
+
   /**
    * @type {Story[]}
    */
-  const stories = await Story.find({ _id: { $in: activeUser.stories } });
-  return response.status(200).json({ message: "User stories", data: stories });
+  const stories = await Story.find(query)
+    .sort({ createdAt: -1 })
+    .skip((page - 1) * limit)
+    .limit(limit * 1);
+
+  const count = await Story.find(query).count();
+
+  return response.status(200).json({
+    message: "User stories",
+    data: stories,
+    totalPages: Math.ceil(count / limit),
+    currentPage: +page,
+  });
+};
+
+/**
+ * User controller to create new User in the database
+ * @param {import('express').Request} request - Express request object.
+ * @param {import('express').Response} response - Express response object
+ * @returns {void}
+ */
+const getUserBookmarks = async (request, response) => {
+  const { page = 1, limit = 4 } = request.query;
+
+  /**
+   * Logged user object
+   * @type {User}
+   */
+  const activeUser = request.activeUser;
+
+  const query = { _id: { $in: activeUser.bookmarks } };
+
+  /**
+   * @type {Story[]}
+   */
+  const stories = await Story.find(query)
+    .sort({ createdAT: -1 })
+    .skip((page - 1) * limit)
+    .limit(limit * 1);
+
+  const count = await Story.find(query).count();
+
+  return response.status(200).json({
+    message: "User bookmarks",
+    data: stories,
+    totalPages: Math.ceil(count / limit),
+    currentPage: +page,
+  });
 };
 
 module.exports = {
   getUser,
   createUser,
   getUserStories,
+  getUserBookmarks,
 };
