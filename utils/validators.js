@@ -23,8 +23,8 @@ const loginValidator = [
 
 const storyValidator = [
   body("category").notEmpty(), // TODO: Add enum validation
-  body("slides.*.heading").notEmpty().isLength({ min: 5, max: 30 }),
-  body("slides.*.description").notEmpty().isLength({ max: 256 }),
+  body("slides.*.heading").notEmpty().isLength({ min: 5 }),
+  body("slides.*.description").notEmpty().isLength({ min: 10 }),
   body("slides.*.imageUrl").notEmpty().isURL(),
 ];
 

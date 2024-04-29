@@ -9,12 +9,11 @@ const SlideSchema = mongoose.Schema(
     heading: {
       type: String,
       minlength: 5,
-      maxlength: 30,
       required: true,
     },
     description: {
       type: String,
-      maxlength: 256,
+      minlength: 5,
       required: true,
     },
     imageUrl: {
