@@ -4,8 +4,8 @@
 const storyRouter = require("express").Router();
 
 const storyController = require("../controllers/story.controller.js");
-const { storyValidator } = require("../utils/validators.js");
 const { verifyToken, getLoggedUser } = require("../utils/middleware.js");
+const { storyValidator } = require("../utils/validators.js");
 
 storyRouter.get("/", storyController.getAllStories);
 storyRouter.get("/:storyId", storyController.getStoryById);

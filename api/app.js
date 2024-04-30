@@ -1,18 +1,18 @@
-// imports
 require("express-async-errors");
 
-const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
 const path = require("path");
 
+const cors = require("cors");
+const express = require("express");
+const mongoose = require("mongoose");
+
+const authRouter = require("../routes/auth.route");
+const categoryRouter = require("../routes/category.route");
+const storyRouter = require("../routes/story.route");
+const userRouter = require("../routes/user.route");
 const config = require("../utils/config");
 const logger = require("../utils/logger");
 const middleware = require("../utils/middleware");
-const userRouter = require("../routes/user.route");
-const authRouter = require("../routes/auth.route");
-const storyRouter = require("../routes/story.route");
-const categoryRouter = require("../routes/category.route");
 
 // mongodb | mongoose connection
 mongoose

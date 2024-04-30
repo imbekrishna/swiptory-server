@@ -1,7 +1,8 @@
 const { validationResult } = require("express-validator");
+const ObjectId = require("mongoose").mongo.ObjectId;
+
 const Story = require("../models/story.model.js");
 const User = require("../models/user.model.js");
-const ObjectId = require("mongoose").mongo.ObjectId;
 
 /**
  * Story controller to list all the stories in the database

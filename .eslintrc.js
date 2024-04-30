@@ -4,7 +4,11 @@ module.exports = {
     es2021: true,
     node: true,
   },
-  extends: "eslint:recommended",
+  extends: [
+    "eslint:recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+  ],
   overrides: [
     {
       env: {
@@ -16,7 +20,7 @@ module.exports = {
       },
     },
   ],
-  ignorePatterns: ["test/**/*"],
+  ignorePatterns: ["test/**/*", "dist/**/*"],
   parserOptions: {
     ecmaVersion: "latest",
   },
@@ -27,5 +31,24 @@ module.exports = {
     quotes: ["error", "double"],
     "object-curly-spacing": ["error", "always"],
     "arrow-spacing": ["error", { before: true, after: true }],
+    "import/order": [
+      "error",
+      {
+        groups: [
+          "builtin",
+          "external",
+          "internal",
+          "parent",
+          "sibling",
+          "index",
+          "object",
+        ],
+        "newlines-between": "always-and-inside-groups",
+        alphabetize: {
+          order: "asc",
+          caseInsensitive: true,
+        },
+      },
+    ],
   },
 };

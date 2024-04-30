@@ -3,9 +3,9 @@
  */
 const userRouter = require("express").Router();
 
-const validators = require("../utils/validators");
 const userController = require("../controllers/user.controller.js");
 const { verifyToken, getLoggedUser } = require("../utils/middleware");
+const validators = require("../utils/validators");
 
 userRouter.get(
   "/stories",

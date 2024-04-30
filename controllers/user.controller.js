@@ -1,7 +1,8 @@
 const bcrypt = require("bcrypt");
 const { validationResult } = require("express-validator");
-const User = require("../models/user.model.js");
+
 const Story = require("../models/story.model.js");
+const User = require("../models/user.model.js");
 
 /**
  * User controller to create new User in the database
