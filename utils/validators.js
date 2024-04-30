@@ -4,22 +4,25 @@ const { body } = require("express-validator");
  * Validator for req body fields
  */
 const signupValidator = [
-  body("username", "Username cannot be empty").notEmpty(),
+  body("username", "Username cannot be empty").notEmpty().trim(),
   body("password", "Password cannot be empty")
     .isLength({ min: 6 })
     .withMessage("Password must be 6 or more characters"),
 ];
 
 const loginValidator = [
-  body("username", "Username cannot be empty").notEmpty(),
+  body("username", "Username cannot be empty").notEmpty().trim(),
   body("password", "Password cannot be empty").notEmpty(),
 ];
 
 const storyValidator = [
-  body("category").notEmpty(), // TODO: Add enum validation
-  body("slides.*.heading").notEmpty().isLength({ min: 5 }),
-  body("slides.*.description").notEmpty().isLength({ min: 10 }),
-  body("slides.*.imageUrl").notEmpty().isURL(),
+  body("category").notEmpty().withMessage("Category required empty"),
+  body("slides.*.heading").notEmpty().withMessage("Heading required"),
+  body("slides.*.description").notEmpty().withMessage("Description required"),
+  body("slides.*.imageUrl")
+    .notEmpty()
+    .isURL()
+    .withMessage("Valid url required"),
 ];
 
 module.exports = {
