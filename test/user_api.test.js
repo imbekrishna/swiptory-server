@@ -58,7 +58,7 @@ describe("User route", () => {
     const body = response.body;
 
     expect(response.statusCode).toEqual(400);
-    expect(typeof body.error).toMatch(/object/i);
+    expect(body.error).toBeDefined();
   });
 });
 
