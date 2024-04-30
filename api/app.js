@@ -42,13 +42,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(logger.requestLogger);
 
 // Health check endpoint
-// app.get("/", (req, res) => {
-//   res.status(200).json({
-//     name: "Swipstory server",
-//     status: "RUNNING",
-//     time: new Date(),
-//   });
-// });
+app.get("/api/health", (req, res) => {
+  res.status(200).json({
+    name: "Swipstory server",
+    status: "RUNNING",
+    time: new Date(),
+  });
+});
 
 // App routes
 app.use("/api/user", userRouter);
