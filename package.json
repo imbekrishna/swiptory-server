@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "prebuild": "rm -r dist",
-    "build": "cd ../swiptory && npm run build",
-    "postbuild": "mv ../swiptory/dist ./",
+    "build": "cd ../swiptory-client && npm run build",
+    "postbuild": "mv ../swiptory-client/dist ./",
     "start": "cross-env NODE_ENV=production node api/index.js",
     "dev": "cross-env NODE_ENV=development node --watch api/index.js",
     "test": "cross-env NODE_ENV=test vitest --isolate",
