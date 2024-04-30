@@ -6,9 +6,7 @@ const User = require("../models/user.model.js");
 
 /**
  * User controller to create new User in the database
- * @param {import('express').Request} request - Express request object.
- * @param {import('express').Response} response - Express response object
- * @returns {void}
+ * @type {ControllerFunction}
  */
 const getUser = async (request, response) => {
   const username = request.params.username;
@@ -26,9 +24,7 @@ const getUser = async (request, response) => {
 
 /**
  * User controller to create new User in the database
- * @param {import('express').Request} request - Express request object.
- * @param {import('express').Response} response - Express response object
- * @returns {void}
+ * @type {ControllerFunction}
  */
 const createUser = async (request, response) => {
   const errors = validationResult(request);
@@ -65,9 +61,7 @@ const createUser = async (request, response) => {
 
 /**
  * User controller to create new User in the database
- * @param {import('express').Request} request - Express request object.
- * @param {import('express').Response} response - Express response object
- * @returns {void}
+ * @type {ControllerFunction}
  */
 const getUserStories = async (request, response) => {
   const { page = 1, limit = 4 } = request.query;
@@ -100,9 +94,7 @@ const getUserStories = async (request, response) => {
 
 /**
  * User controller to create new User in the database
- * @param {import('express').Request} request - Express request object.
- * @param {import('express').Response} response - Express response object
- * @returns {void}
+ * @type {ControllerFunction}
  */
 const getUserBookmarks = async (request, response) => {
   const { page = 1, limit = 4 } = request.query;
@@ -119,7 +111,7 @@ const getUserBookmarks = async (request, response) => {
    * @type {Story[]}
    */
   const stories = await Story.find(query)
-    .sort({ createdAT: -1 })
+    .sort({ createdAt: -1 })
     .skip((page - 1) * limit)
     .limit(limit * 1);
 

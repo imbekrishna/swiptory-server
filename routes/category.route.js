@@ -3,12 +3,8 @@
  */
 const categoryRouter = require("express").Router();
 
-const {
-  getCategories,
-  // addCategory,
-} = require("../controllers/category.controller");
+const { getCategories } = require("../controllers/category.controller");
 
 categoryRouter.get("/", getCategories);
-// categoryRouter.post("/", addCategory);
 
 module.exports = categoryRouter;

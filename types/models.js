@@ -5,7 +5,6 @@
  * @property {string} password - Password of the user.
  * @property {Array<string>} [stories] - Array of Ids of stories created by the user
  * @property {Array<string>} [bookmarks] - Array of Ids of bookmarked stories
- * @property {Array<string>} [likes] - Array of Ids of liked stories
  * @memberof typedefs
  */
 

@@ -6,21 +6,28 @@ const User = require("../models/user.model.js");
 
 /**
  * Story controller to list all the stories in the database
- * @param {import('express').Request} request - Express request object.
- * @param {import('express').Response} response - Express response object
- * @returns {void}
+ * @typedef {ControllerFunction}
  */
 const getAllStories = async (request, response) => {
   const { page = 1, limit = 4, category } = request.query;
 
-  const query = category ? { category } : {};
+  const basePipeline = [
+    { $addFields: { likesCount: { $size: "$likes" } } },
+    { $sort: { likesCount: -1 } },
+    { $skip: (page - 1) * limit },
+    { $limit: limit * 1 },
+  ];
 
-  const stories = await Story.find(query)
-    .limit(limit * 1)
-    .skip((page - 1) * limit)
-    .sort({ likes: -1 });
+  const categoryPipeline = [
+    { $match: { category: category } },
+    ...basePipeline,
+  ];
 
-  const count = await Story.find(query).count();
+  const stories = await Story.aggregate(
+    category ? categoryPipeline : basePipeline
+  );
+
+  const count = await Story.find(category ? { category } : {}).count();
 
   response.status(200).json({
     message: "All stories",
@@ -32,9 +39,7 @@ const getAllStories = async (request, response) => {
 
 /**
  * Story controller to list a single story in the database
- * @param {import('express').Request} request - Express request object.
- * @param {import('express').Response} response - Express response object
- * @returns {void}
+ * @typedef {ControllerFunction}
  */
 const getStoryById = async (request, response) => {
   const storyId = request.params.storyId;
@@ -49,9 +54,7 @@ const getStoryById = async (request, response) => {
 
 /**
  * Story controller to list a single story in the database
- * @param {import('express').Request} request - Express request object.
- * @param {import('express').Response} response - Express response object
- * @returns {void}
+ * @typedef {ControllerFunction}
  */
 const getStoryByIdPopulated = async (request, response) => {
   const storyId = request.params.storyId;
@@ -68,9 +71,7 @@ const getStoryByIdPopulated = async (request, response) => {
 
 /**
  * Story controller to create new story in the database
- * @param {import('express').Request} request - Express request object.
- * @param {import('express').Response} response - Express response object
- * @returns {void}
+ * @type {ControllerFunction}
  */
 const createStory = async (request, response) => {
   const errors = validationResult(request);
@@ -101,10 +102,7 @@ const createStory = async (request, response) => {
 };
 /**
  * Story controller to update a story in the database
- * @param {import('express').Request} request - Express request object.
- * @param {import('express').Response} response - Express response object
- * @param {import('express').NextFunction} next - The next middleware function in the stack.
- * @returns {void}
+ * @typedef {ControllerFunction}
  */
 const updateStory = async (request, response) => {
   const errors = validationResult(request);
@@ -156,12 +154,9 @@ const updateStory = async (request, response) => {
 
 /**
  * Story controller to like a story in the database
- * @param {import('express').Request} request - Express request object.
- * @param {import('express').Response} response - Express response object
- * @param {import('express').NextFunction} next - The next middleware function in the stack.
- * @returns {void}
+ * @typedef {ControllerFunction}
  */
-const likeStory = async (request, response, next) => {
+const likeStory = async (request, response) => {
   const storyId = request.params.storyId;
 
   /**
@@ -170,66 +165,32 @@ const likeStory = async (request, response, next) => {
    */
   const activeUser = request.activeUser;
 
-  const session = await User.startSession();
-  session.startTransaction();
-  try {
-    await User.updateOne({ _id: activeUser._id }, [
-      {
-        $set: {
-          likes: {
-            $cond: [
-              {
-                $in: [storyId, "$likes"],
-              },
-              {
-                $setDifference: ["$likes", [storyId]],
-              },
-              {
-                $concatArrays: ["$likes", [storyId]],
-              },
-            ],
-          },
+  await Story.updateOne({ _id: storyId }, [
+    {
+      $set: {
+        likes: {
+          $cond: [
+            {
+              $in: [activeUser._id, "$likes"],
+            },
+            {
+              $setDifference: ["$likes", [activeUser._id]],
+            },
+            {
+              $concatArrays: ["$likes", [activeUser._id]],
+            },
+          ],
         },
       },
-    ]);
+    },
+  ]);
 
-    await Story.updateOne({ _id: storyId }, [
-      {
-        $set: {
-          likes: {
-            $cond: [
-              {
-                $in: [activeUser._id, "$likes"],
-              },
-              {
-                $setDifference: ["$likes", [activeUser._id]],
-              },
-              {
-                $concatArrays: ["$likes", [activeUser._id]],
-              },
-            ],
-          },
-        },
-      },
-    ]);
-
-    await session.commitTransaction();
-    session.endSession();
-    response.status(201).json({ message: "Likes updated" });
-  } catch (error) {
-    response.status(422).json({ message: "Failed to update likes" });
-    await session.abortTransaction();
-    session.endSession();
-    next(error);
-  }
+  response.status(201).json({ message: "Likes updated" });
 };
 
 /**
  * Story controller to bookmark a story
- * @param {import('express').Request} request - Express request object
- * @param {import('express').Response} response - Express response object
- * @param {import('express').NextFunction} next - The next middleware function in the stack.
- * @returns {void}
+ * @typedef {ControllerFunction}
  */
 const bookmarkStory = async (request, response, next) => {
   const storyId = request.params.storyId;
@@ -296,9 +257,7 @@ const bookmarkStory = async (request, response, next) => {
 
 /**
  * Story controller to delete a story in the database
- * @param {import('express').Request} request - Express request object.
- * @param {import('express').Response} response - Express response object
- * @returns {void}
+ * @type {ControllerFunction}
  */
 const deleteStoryById = async (request, response) => {
   const storyId = request.params.storyId;
@@ -330,8 +289,6 @@ const deleteStoryById = async (request, response) => {
   }
 
   await Story.findOneAndDelete({ _id: storyId });
-
-  // FIXME: What happens to the user likes or bookmarks if the story is deleted?
 
   /**
    * @type {import("mongoose").mongo.ObjectId}

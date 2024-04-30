@@ -21,7 +21,6 @@ const UserSchema = new mongoose.Schema(
       { type: mongoose.Schema.Types.ObjectId, default: [], ref: "Story" },
     ],
     bookmarks: [{ type: mongoose.Schema.Types.ObjectId, default: [] }],
-    likes: [{ type: mongoose.Schema.Types.ObjectId, default: [] }],
   },
   {
     timestamps: true,

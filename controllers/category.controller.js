@@ -2,9 +2,7 @@ const Category = require("../models/category.model");
 
 /**
  * Catetory controller to get all categories
- * @param {import('express').Request} request - Express request object.
- * @param {import('express').Response} response - Express response object
- * @returns {void}
+ * @type {ControllerFunction}
  */
 const getCategories = async (request, response) => {
   const categories = await Category.find({});
@@ -13,9 +11,7 @@ const getCategories = async (request, response) => {
 
 /**
  * Catetory controller to get all categories
- * @param {import('express').Request} request - Express request object.
- * @param {import('express').Response} response - Express response object
- * @returns {void}
+ * @type {ControllerFunction}
  */
 const addCategory = async (request, response) => {
   const category = await Category.create(request.body);

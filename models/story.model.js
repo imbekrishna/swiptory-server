@@ -34,7 +34,6 @@ const StorySchema = new mongoose.Schema(
       ref: "User",
     },
 
-    // Is there a need to create subschema?
     category: {
       type: mongoose.Schema.Types.String,
       required: true,

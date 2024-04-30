@@ -6,9 +6,7 @@ const User = require("../models/user.model.js");
 
 /**
  * Auth controller to validate user and generate jwt token
- * @param {import('express').Request} request - Express request object.
- * @param {import('express').Response} response - Express response object
- * @returns {void}
+ * @typedef {ControllerFunction}
  */
 const loginUser = async (request, response) => {
   const errors = validationResult(request);

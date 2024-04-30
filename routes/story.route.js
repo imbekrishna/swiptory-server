@@ -9,7 +9,6 @@ const { storyValidator } = require("../utils/validators.js");
 
 storyRouter.get("/", storyController.getAllStories);
 storyRouter.get("/:storyId", storyController.getStoryById);
-// storyRouter.get("/:storyId/populate", storyController.getStoryByIdPopulated); // Get all populated field as well
 storyRouter.post(
   "/",
   storyValidator,

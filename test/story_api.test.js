@@ -167,7 +167,7 @@ describe("Story route", () => {
     );
   });
 
-  test("liking story updates story and user", async () => {
+  test("liking story updates story", async () => {
     const response = await api
       .patch(`/api/story/like/${storyId}`)
       .set({ authorization: `Bearer ${authToken1}` });
@@ -175,17 +175,13 @@ describe("Story route", () => {
     expect(response.statusCode).toBe(201);
     expect(response.body.message).toMatch(/likes updated/i);
 
-    const user = await User.findById({ _id: userId1 });
     const story = await Story.findById({ _id: storyId });
-
-    const userLikesArray = user.likes.map((storyId) => storyId.toString());
     const storyLikesArray = story.likes.map((userId) => userId.toString());
 
-    expect(userLikesArray).toContain(storyId);
     expect(storyLikesArray).toContain(userId1);
   });
 
-  test("unliking story updates story and user", async () => {
+  test("unliking story updates story", async () => {
     const response = await api
       .patch(`/api/story/like/${storyId}`)
       .set({ authorization: `Bearer ${authToken1}` });
@@ -196,14 +192,12 @@ describe("Story route", () => {
     const user = await User.findById({ _id: userId1 });
     const story = await Story.findById({ _id: storyId });
 
-    const userLikesArray = user.likes.map((storyId) => storyId.toString());
     const storyLikesArray = story.likes.map((userId) => userId.toString());
 
-    expect(userLikesArray).not.toContain(storyId);
     expect(storyLikesArray).not.toContain(userId1);
   });
 
-  test("bookmarking story updates user", async () => {
+  test("bookmarking story updates user and story", async () => {
     const response = await api
       .patch(`/api/story/bookmark/${storyId}`)
       .set({ authorization: `Bearer ${authToken1}` });
@@ -212,11 +206,17 @@ describe("Story route", () => {
     expect(response.body.message).toMatch(/bookmarks updated/i);
 
     const user = await User.findById({ _id: userId1 });
+    const story = await Story.findById({ _id: storyId });
+
     const userBookmarskArr = user.bookmarks.map((storyId) =>
       storyId.toString()
     );
+    const storyBookmarksArray = story.bookmarks.map((userId) =>
+      userId.toString()
+    );
 
     expect(userBookmarskArr).toContain(storyId);
+    expect(storyBookmarksArray).toContain(userId1);
   });
 
   test("bookmarking story again updates user", async () => {
@@ -228,11 +228,17 @@ describe("Story route", () => {
     expect(response.body.message).toMatch(/bookmarks updated/i);
 
     const user = await User.findById({ _id: userId1 });
+    const story = await Story.findById({ _id: storyId });
+
     const userBookmarskArr = user.bookmarks.map((storyId) =>
       storyId.toString()
     );
+    const storyBookmarksArray = story.bookmarks.map((userId) =>
+      userId.toString()
+    );
 
     expect(userBookmarskArr).not.toContain(storyId);
+    expect(storyBookmarksArray).not.toContain(userId1);
   });
 
   test("fails to delete story with different user", async () => {

@@ -61,7 +61,6 @@ app.get("*", async (request, response) => {
 });
 
 // Error handling middlewares
-// app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
 
 if (process.env.NODE_ENV === "production") {
