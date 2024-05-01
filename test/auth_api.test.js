@@ -24,8 +24,6 @@ describe("Auth route", () => {
   test("fails to create new user with ivalid data", async () => {
     const response = await api.post("/api/auth/register").send(invalidUserData);
 
-    const user = response.body.data;
-
     expect(response.statusCode).toEqual(400);
     // expect(user.username).toEqual(validUserData.username);
   });
