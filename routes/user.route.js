@@ -21,7 +21,7 @@ userRouter.get(
   userController.getUserBookmarks
 );
 
-userRouter.get("/:username", userController.getUser);
+// userRouter.get("/:username", userController.getUser);
 
 userRouter.post("/", validators.signupValidator, userController.createUser);
 
