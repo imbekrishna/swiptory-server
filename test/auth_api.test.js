@@ -18,12 +18,36 @@ beforeAll(async () => {
 describe("Auth route", () => {
   const invalidUserData = {
     username: "imbekrishna",
-    password: "we234",
+    password: "we34",
   };
 
-  test("logs in the user with valid data", async () => {
-    const user = await api.post("/api/user").send(validUserData);
+  test("fails to create new user with ivalid data", async () => {
+    const response = await api.post("/api/auth/register").send(invalidUserData);
 
+    const user = response.body.data;
+
+    expect(response.statusCode).toEqual(400);
+    // expect(user.username).toEqual(validUserData.username);
+  });
+
+  test("creates new user with valid data", async () => {
+    const response = await api.post("/api/auth/register").send(validUserData);
+
+    const user = response.body.data;
+
+    expect(response.statusCode).toEqual(201);
+    expect(user.username).toEqual(validUserData.username);
+  });
+
+  test("fails to create new user with existing username", async () => {
+    const response = await api.post("/api/auth/register").send(validUserData);
+
+    const user = response.body.data;
+
+    expect(response.statusCode).toEqual(409);
+  });
+
+  test("logs in the user with valid data", async () => {
     const response = await api.post("/api/auth/login").send(validUserData);
 
     const loginData = response.body.data;

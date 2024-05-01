@@ -13,7 +13,7 @@ const validUserData = {
 
 const invalidUserData = {
   username: "imbekrishna",
-  password: "we234",
+  password: "we34",
 };
 
 describe("User route", () => {
